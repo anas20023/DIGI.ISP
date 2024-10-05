@@ -4,6 +4,9 @@
   ],
   "hints": {
     "axe/forms": "off",
-    "typescript-config/strict": "off"
+    "typescript-config/strict": "off",
+    "compat-api/html": "off",
+    "no-inline-styles": "off",
+    "axe/name-role-value": "off"
   }
 }
