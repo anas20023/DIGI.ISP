@@ -20,7 +20,7 @@ const Signin = () => {
     return (
         <section>
             <Navbar />
-            <div className="flex flex-col lg:flex-row-reverse items-center justify-center w-full min-h-screen bg-[#00141f] py-6 lg:py-0 lg:gap-6">
+            <div className="flex flex-col lg:flex-row-reverse items-center justify-center w-full min-h-screen h-full bg-[#00141f] py-6 px-4 lg:py-0 lg:gap-6">
                 {/* Form container with white background */}
                 <motion.div
                     ref={formRef}
