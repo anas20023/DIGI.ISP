@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { motion } from "framer-motion";
 import Navbar from "./navbar.tsx";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -5,10 +6,15 @@ import "swiper/css";
 import "swiper/css/autoplay";
 import { Autoplay } from "swiper/modules";
 import { useRef, useState, useEffect } from "react";
+import axios from "axios";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Signin = () => {
     const formRef = useRef<HTMLDivElement>(null);
     const [formHeight, setFormHeight] = useState(0);
+    const [uid, setUid] = useState("");
+    const [password, setPassword] = useState("");
 
     // Update the height of the slider based on the form height
     useEffect(() => {
@@ -16,6 +22,29 @@ const Signin = () => {
             setFormHeight(formRef.current.offsetHeight);
         }
     }, []);
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        //console.log(uid,password)
+        try {
+            const response = await axios.post("http://localhost:5000/api/auth/login", {
+                username: uid,
+                password: password,
+            });
+            if (response.status === 200) {
+                toast.success("Login successful!", {
+                    position: "top-right",  // Use a string directly
+                    autoClose: 3000,
+                });
+            }
+        } catch (error) {
+            toast.error("Login failed! Please check your credentials.", {
+                position: "top-right",  // Use a string directly
+                autoClose: 3000,
+            });
+        }
+    };
+
 
     return (
         <section>
@@ -32,7 +61,7 @@ const Signin = () => {
                     <h1 className="text-2xl font-bold text-left text-gray-900 mb-6">
                         Sign in to your account
                     </h1>
-                    <form className="space-y-4 md:space-y-6" action="#">
+                    <form className="space-y-4 md:space-y-6" onSubmit={handleSubmit}>
                         <div>
                             <label htmlFor="uid" className="block mb-2 text-sm font-medium text-gray-900">
                                 User ID
@@ -43,6 +72,8 @@ const Signin = () => {
                                 id="uid"
                                 className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-[#00406c] focus:border-[#00406c] block w-full p-3 transition-shadow duration-300"
                                 placeholder="123456"
+                                value={uid}
+                                onChange={(e) => setUid(e.target.value)}
                                 required
                             />
                         </div>
@@ -56,6 +87,8 @@ const Signin = () => {
                                 id="password"
                                 placeholder="••••••••"
                                 className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-[#00406c] focus:border-[#00406c] block w-full p-3 transition-shadow duration-300"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
                                 required
                             />
                         </div>
@@ -67,7 +100,6 @@ const Signin = () => {
                                         aria-describedby="remember"
                                         type="checkbox"
                                         className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-[#00406c]"
-                                        required
                                     />
                                 </div>
                                 <div className="ml-3 text-sm">
@@ -133,6 +165,7 @@ const Signin = () => {
             <div className="flex items-center justify-center bg-[#00141f] py-4">
                 <p className="text-sm text-gray-100">© 2024 DIGI.ISP. All rights reserved.</p>
             </div>
+            <ToastContainer />
         </section>
     );
 };
